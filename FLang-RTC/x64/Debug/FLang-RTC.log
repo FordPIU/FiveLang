@@ -1,2 +1,3 @@
-﻿  FLang-RTC.cpp
+﻿  Lexer.cpp
+D:\Github\FiveLang\FLang-RTC\Lexer.cpp(23,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   FLang-RTC.vcxproj -> D:\Github\FiveLang\FLang-RTC\x64\Debug\FLang-RTC.exe

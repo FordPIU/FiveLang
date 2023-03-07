@@ -1,45 +1,51 @@
-class Example1
+class Example1 {
     var num // This doesn't need to be defined, but for the point of readability is.
 
-    onConstruct()
+    onConstruct() {
         .num = 0 // The "." is used as the "this" or "self" operator. You may also use "self" instead of ".".
-    end
+    }
 
-    incrementNum()
+    incrementNum() {
         .num++
-    end
+    }
 
-    decrementNum()
+    decrementNum() {
         .num--
-    end
-end
+    }
+}
 
-thread ThreadedExample({Example1}example) // Text inside of the {} hard defines/requires a explict variable type. This is optional.
+thread ThreadedExample({Example1}example) { // Text inside of the {} hard defines/requires a explict variable type. This is optional.
     example.incrementNum()
     printLn(example.num)
-end
+}
 
-function Example1Master()
+function Example1Master() {
     var example1 = Example1() // There is no new operator, but instead calling the class as a function automatically does this.
     Example1 example = example1 // Instead of using var you may use a class name, to hard define/require a variable type.
 
     ThreadedExample[Tick=1s](example) // This creates a new thread, with the paramters for the thread defined in the [], and the params to pass in the ().
             // For this example, this will increment the num variable inside of Example1 every second, and print that out.
-end /* The number of "d"'s is proportional to how many ends for the compiler to add. In this case 1.
-Example of 2 ends would be "endd", or 3 ends as "enddd".
-This is also a exmaple of multi-line comments.*/
+}
 
 
 
-function Example2()
+function Example2() {
     Example1 example = Example1()
 
-    while() // Empty as a quick way to do a while true.
+    while() { // Empty as a quick way to do a while true.
         example.decrementNum()
         printLin(example.num)
-endd // 2 d's for the end, 1 for the function, 1 for the while loop.
+    }
+}
 
 
-function {float} HardDefinedReturn()
+function {float} HardDefinedReturn() {
     ret 1.0 // ret for Return, you may also just use return.
-end
+}
+
+// Quickie Test
+var1 = 525; var2 = 5892
+var3 = "Hello World!"
+
+var4, var 5 = "commentexample", // this is a comment // "this is not a comment"
+// end of file comment

@@ -131,10 +131,12 @@
     <ClCompile Include="ConsoleUtils.cpp" />
     <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="FLang-RTC.cpp" />
+    <ClCompile Include="Lexer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleUtils.h" />
     <ClInclude Include="FileUtils.h" />
+    <ClInclude Include="Lexer.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
