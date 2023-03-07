@@ -9,14 +9,26 @@ class Lexer {
 public:
 	Lexer(string rawFileText);
 
-	list<string> GetCurrentFileText();
+	void Lex();
 
-	void ChunkifyByLine();
-	void RemoveComments();
+	string GetCodeText() { return this->codeText; }
+	list<string> GetCodeLines() { return this->codeLines; }
+	list<string> GetCodeBodys() { return this->codeBodys; }
 
 private:
 	string fileText;
-	int fileTextLength;
+	int fileTextLength = 0;
 
-	list<string> updatedFileText;
+	string codeText;
+	int codeTextLength = 0;
+	list<string> codeLines;
+	list<string> codeBodys;
+
+	void RemoveSLComments();
+	void RemoveSoLSpaces();
+
+	void ChunkifyByLine();
+	void ChunkifyByBody();
+
+	void newText(string newText);
 };

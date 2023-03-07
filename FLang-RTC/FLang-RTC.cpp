@@ -10,9 +10,10 @@ int main()
     string fileText = GetFileText("../Example.clang") + '\n';
 
     Lexer lexer = Lexer(fileText);
-    lexer.ChunkifyByLine();
-    lexer.RemoveComments();
-    list<string> lines = lexer.GetCurrentFileText();
+
+    lexer.Lex();
+
+    list<string> lines = lexer.GetCodeLines();
 
     for (auto it = lines.begin(); it != lines.end(); ++it) {
         printLn(*it);
