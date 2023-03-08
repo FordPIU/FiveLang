@@ -229,5 +229,3 @@ void Lexer::newText(string newText) {
 	this->codeText = newText;
 	this->codeTextLength = newText.length();
 }
-
-//
