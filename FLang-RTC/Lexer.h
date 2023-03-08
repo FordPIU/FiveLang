@@ -32,4 +32,4 @@ private:
 	void ChunkifyByBody();
 
 	void newText(string newText);
-}; ////
+}; //////
