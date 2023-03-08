@@ -17,11 +17,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Set up MSVC
-      uses: microsoft/setup-msbuild@v1.0.1
-      with:
-        msvc-version: 'latest'
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
