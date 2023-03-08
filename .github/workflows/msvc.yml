@@ -18,7 +18,7 @@ on:
 
 env:
   # Path to the CMake build directory.
-  build: '${{ github.workspace }}/build'
+  build: '${{ github.workspace }}/FLang-RTC'
 
 permissions:
   contents: read
