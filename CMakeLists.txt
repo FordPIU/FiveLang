@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 project(FiveLang VERSION 0.1)
 
 file(GLOB_RECURSE SOURCES 
+    "lib/**/*.cpp"    
     "src/*.cpp"
-    "lib/**/*.cpp"
 )
 add_executable(FiveLang ${SOURCES})
 
