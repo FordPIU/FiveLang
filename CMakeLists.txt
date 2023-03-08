@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(FiveLang VERSION 1.0)
+project(FiveLang VERSION 0.1)
 
 add_executable(FiveLang Debugger.cpp)
 

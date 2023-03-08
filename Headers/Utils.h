@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ConsoleUtils.h"
-#include "FileUtils.h"
+#include "Utils/ConsoleUtils.h"
+#include "Utils/FileUtils.h"
 
 
 namespace Utils {
