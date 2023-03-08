@@ -19,10 +19,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Setup
+      uses: actions/checkout@v3, microsoft/setup-msbuild@v1.0.2
+      
+    - name: Print compiler version and language standard
+      run: |
+        cl.exe /version
+        cl.exe /d1reportSingleClassLayout- /std:c++20 <nul | findstr /C:"using C++" /C:"class layout for"
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
