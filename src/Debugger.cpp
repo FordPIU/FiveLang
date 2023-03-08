@@ -38,7 +38,7 @@ int main()
     string input;
 
     while(true) {
-        printLn("\nEnter a command (type 'exit' to quit):");
+        printLn("\n----\nEnter one of the following commands:\nexit\nword_list\nline_list\ntoken_list\n-----");
         getline(cin, input);
 
         transform(input.begin(), input.end(), input.begin(), [](unsigned char c){ return std::tolower(c); });
@@ -51,16 +51,25 @@ int main()
             list<string> word_list = lexer.GetCodeWords();
             for (auto it = word_list.begin(); it != word_list.end(); ++it) {
                 printLn(*it);
-                
             }
         }
         else if (input == "line_list") {
             list<string> line_list = lexer.GetCodeLines();
             for (auto it = line_list.begin(); it != line_list.end(); ++it) {
                 printLn(*it);
-                
             }
-        } else {
+        }
+        else if (input == "token_list") {
+            list<Token*> token_list = lexer.GetTokens();
+            int i = 0;
+
+            for (auto token : token_list) {
+                i++;
+                printLn("\nClass #: " + to_string(i));
+                token->output_class();
+            }
+        }
+        else {
             printLn("\nYou entered a unknown");
         }
     }

@@ -13,6 +13,8 @@ class TOKEN_CLASS : public Token {
 public:
 	TOKEN_CLASS(int wordNum, string className) : Token(wordNum), className(className) {}
 
+	void output_class() override { printLn("Class Name: " + this->className); }
+
 	string GetClassName() { return this->className; }
 
 private:
@@ -94,13 +96,9 @@ void Lexer::Tokenize() {
 
 		if (currentWord == "class") {
 			if (!nextWord.empty() && hasNoCharactersInString(nextWord)) {
-				TOKEN_CLASS classToken = TOKEN_CLASS(i, nextWord);
-
-				this->tokens.push_back(classToken);
+				this->tokens.push_back(new TOKEN_CLASS(i, nextWord));
 
 				++it;
-
-				printLn("Found a new class, with the name: " + nextWord);
 			} else {
 				error("Class Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + nextWord);
 				return;
