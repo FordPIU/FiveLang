@@ -1,5 +1,7 @@
 #pragma once
 
+#include<list>
+
 #include "Utils/ConsoleUtils.h"
 #include "Utils/FileUtils.h"
 
