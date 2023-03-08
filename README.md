@@ -5,7 +5,7 @@
 <br>
 
 ## Todo
-[ ] Lexer<br>
-[ ] Praser<br>
-[ ] FiveM Loader<br>
-[ ] FiveM Loader Server<br>
+- [ ] Lexer<br>
+- [ ] Praser<br>
+- [ ] FiveM Loader<br>
+- [ ] FiveM Loader Server<br>
