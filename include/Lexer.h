@@ -3,21 +3,10 @@
 #include <unordered_set>
 #include <cctype>
 #include "Utils.h"
+#include "Tokens.h"
 
 using namespace Utils;
 
-
-class Token {
-public:
-	Token(int wordNum) : wordNum(wordNum) {}
-
-	int GetWordNumber() { return this->wordNum; }
-
-	virtual void output_class() { printLn("Class contains no data to output"); }
-
-private:
-	int wordNum;
-};
 
 class Lexer {
 public:

@@ -9,18 +9,6 @@ public:
 	int end;
 };
 
-class TOKEN_CLASS : public Token {
-public:
-	TOKEN_CLASS(int wordNum, string className) : Token(wordNum), className(className) {}
-
-	void output_class() override { printLn("Class Name: " + this->className); }
-
-	string GetClassName() { return this->className; }
-
-private:
-	string className;
-};
-
 
 
 string removeRangesFromText(list<TextRange> ranges, string codeText) {
@@ -101,6 +89,15 @@ void Lexer::Tokenize() {
 				++it;
 			} else {
 				error("Class Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + nextWord);
+				return;
+			}
+		} else if (currentWord == "thread") {
+			if (!nextWord.empty() && hasNoCharactersInString(nextWord)) {
+				this->tokens.push_back(new TOKEN_THREAD(i, nextWord));
+
+				++it;
+			} else {
+				error("Thread Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + nextWord);
 				return;
 			}
 		}
@@ -251,30 +248,33 @@ void Lexer::ChunkifyByLine() {
 }
 
 void Lexer::ChunkifyByWords() {
-	list<string> wordsList;
+    list<string> wordsList;
+    string delimiters = " ,;({})";
 
-	for (auto it = this->codeLines.begin(); it != this->codeLines.end(); ++it) {
-		string lineText = *it;
-		string delimiter = " ";
-		size_t pos = 0;
-		string token;
+    for (auto it = this->codeLines.begin(); it != this->codeLines.end(); ++it) {
+        string lineText = *it;
+        string token;
+        size_t pos = 0;
 
-		while ((pos = lineText.find(delimiter)) != string::npos) {
-			token = lineText.substr(0, pos);
+        while (pos < lineText.length()) {
+            size_t nextDelimiterPos = lineText.find_first_of(delimiters, pos);
 
-			if (!token.empty()) {
-				wordsList.push_back(token);
-			}
+            if (nextDelimiterPos == string::npos) {
+                // No more delimiters found in the line
+                token = lineText.substr(pos);
+                pos = lineText.length();
+            } else {
+                token = lineText.substr(pos, nextDelimiterPos - pos);
+                pos = nextDelimiterPos + 1;
+            }
 
-			lineText.erase(0, pos + delimiter.length());
-		}
-
-		if (!lineText.empty()) {
-			wordsList.push_back(lineText);
-		}
+            if (!token.empty()) {
+                wordsList.push_back(token);
+            }
+        }
     }
 
-	this->codeWords = wordsList;
+    this->codeWords = wordsList;
 }
 
 void Lexer::newText(string newText) {

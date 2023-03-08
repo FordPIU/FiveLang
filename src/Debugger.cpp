@@ -65,7 +65,7 @@ int main()
 
             for (auto token : token_list) {
                 i++;
-                printLn("\nClass #: " + to_string(i));
+                printLn("\nToken #: " + to_string(i));
                 token->output_class();
             }
         }
