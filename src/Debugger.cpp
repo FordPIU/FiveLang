@@ -1,11 +1,11 @@
 #include <unordered_set>
 
-#include "UtilsMaster.h"
+#include "Utils.h"
 #include "Lexer.h"
 
 using namespace Utils;
 
-// C++ Main //
+
 int main()
 {
     string fileText = GetFileText(".Examples/example.clang") + '\n';

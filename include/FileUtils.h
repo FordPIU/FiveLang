@@ -8,6 +8,7 @@
 using namespace std;
 using namespace ConsoleUtils;
 
+
 namespace FileUtils {
 	string GetFileText(string FilePath);
 }
