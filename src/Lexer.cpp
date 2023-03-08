@@ -249,7 +249,7 @@ void Lexer::ChunkifyByLine() {
 
 void Lexer::ChunkifyByWords() {
     list<string> wordsList;
-    string delimiters = " ,;({})";
+    string delimiters = " ,;({})\"\'";
 
     for (auto it = this->codeLines.begin(); it != this->codeLines.end(); ++it) {
         string lineText = *it;

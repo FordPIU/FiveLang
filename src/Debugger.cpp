@@ -38,12 +38,12 @@ int main()
     string input;
 
     while(true) {
-        printLn("\n----\nEnter one of the following commands:\nexit\nword_list\nline_list\ntoken_list\n-----");
+        printLn("\n---------------------\nEnter a new command:\nexit - Close the program.\nquit - Close the program.\n\nword_list - List of all words in lexer.\nline_list - List of all lines in lexer.\ntoken_list - List of all tokens in lexer.\n---------------------");
         getline(cin, input);
 
         transform(input.begin(), input.end(), input.begin(), [](unsigned char c){ return std::tolower(c); });
 
-        if (input == "exit") {
+        if (input == "exit" || input == "quit") {
             printLn("\nExiting Program...");
             return 0;
         }
