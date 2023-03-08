@@ -1,0 +1,67 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.33.31631.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///d:/github/fivelang/flang-rtc/flang-rtc.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "6ea3c403fbb155efcbfe90619f5c8bd28b48a059b0e1497c588e9bd7c293efec"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/github/fivelang/flang-rtc/utils.h"
+          },
+          "hashes": {
+            "sha-256": "691eef831fe572457565462532499d9b621a6e499f6ec8ae13c2c262503b2dee"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/github/fivelang/flang-rtc/consoleutils.h"
+          },
+          "hashes": {
+            "sha-256": "dbda13133f8c96d0b1a0ed06fc0cc9d5e40913674c112ab4f351f8b679d61b94"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/github/fivelang/flang-rtc/fileutils.h"
+          },
+          "hashes": {
+            "sha-256": "5daddf03032ce937f143bdf316a6759fbd6b30a0b8e55ba0fd379393f0ca281b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/github/fivelang/flang-rtc/lexer.h"
+          },
+          "hashes": {
+            "sha-256": "59f7a56d1a78a3809ca1d0f46a73eee9c8c34a3ef52b5074b74ac3ca7036cd2b"
+          }
+        }
+      ]
+    }
+  ]
+}

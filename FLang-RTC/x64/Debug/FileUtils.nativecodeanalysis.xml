@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Github\FiveLang\FLang-RTC\</FILEPATH>
+      <FILENAME>FileUtils.cpp</FILENAME>
+      <LINE>7</LINE>
+      <COLUMN>52</COLUMN>
+    </SFA>
+    <DEFECTCODE>6387</DEFECTCODE>
+    <DESCRIPTION>'_Param_(1)' could be '0'.</DESCRIPTION>
+    <FUNCTION>FileUtils::GetFileText</FUNCTION>
+    <DECORATED>?GetFileText@FileUtils@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V23@@Z</DECORATED>
+    <FUNCLINE>4</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>4</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>D:\Github\FiveLang\FLang-RTC\</FILEPATH>
+        <FILENAME>FileUtils.cpp</FILENAME>
+        <LINE>5</LINE>
+        <COLUMN>13</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Github\FiveLang\FLang-RTC\</FILEPATH>
+        <FILENAME>FileUtils.cpp</FILENAME>
+        <LINE>7</LINE>
+        <COLUMN>8</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Github\FiveLang\FLang-RTC\</FILEPATH>
+        <FILENAME>FileUtils.cpp</FILENAME>
+        <LINE>7</LINE>
+        <COLUMN>29</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Github\FiveLang\FLang-RTC\</FILEPATH>
+        <FILENAME>FileUtils.cpp</FILENAME>
+        <LINE>7</LINE>
+        <COLUMN>28</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Github\FiveLang\FLang-RTC\</FILEPATH>
+        <FILENAME>FileUtils.cpp</FILENAME>
+        <LINE>7</LINE>
+        <COLUMN>52</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>
