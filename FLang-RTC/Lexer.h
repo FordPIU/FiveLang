@@ -32,5 +32,3 @@ private:
 
 	void newText(string newText);
 };
-
-// test #2
