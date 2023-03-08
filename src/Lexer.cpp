@@ -9,6 +9,17 @@ public:
 	int end;
 };
 
+class TOKEN_CLASS : public Token {
+public:
+	TOKEN_CLASS(int wordNum, string className) : Token(wordNum), className(className) {}
+
+	string GetClassName() { return this->className; }
+
+private:
+	string className;
+};
+
+
 
 string removeRangesFromText(list<TextRange> ranges, string codeText) {
 	string workingText = codeText;
@@ -24,6 +35,18 @@ string removeRangesFromText(list<TextRange> ranges, string codeText) {
 	}
 
 	return workingText;
+}
+
+bool hasNoCharactersInString(const string& word) {
+    static const string blacklist = "!@#$%^&*()_+-={}[]\\|;:'\"<>,.?/~`";
+
+    for (char c : word) {
+        if (blacklist.find(c) != string::npos) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 
@@ -60,9 +83,30 @@ void Lexer::Tokenize() {
 	if (!this->Lexed) { error("You did not lex yet!"); return; }
 
 	for (auto it = this->codeWords.begin(); it != this->codeWords.end(); ++it) {
-		string lineText = *it;
-        
-    }
+		int i = static_cast<int>(distance(this->codeWords.begin(), it));
+        string currentWord = *it;
+		string nextWord = "";
+		
+		auto nextIt = next(it);
+		if (nextIt != this->codeWords.end()) {
+			nextWord = *nextIt;
+		}
+
+		if (currentWord == "class") {
+			if (!nextWord.empty() && hasNoCharactersInString(nextWord)) {
+				TOKEN_CLASS classToken = TOKEN_CLASS(i, nextWord);
+
+				this->tokens.push_back(classToken);
+
+				++it;
+
+				printLn("Found a new class, with the name: " + nextWord);
+			} else {
+				error("Class Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + nextWord);
+				return;
+			}
+		}
+	}
 }
 
 

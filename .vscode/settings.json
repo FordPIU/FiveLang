@@ -53,6 +53,20 @@
         "xutility": "cpp",
         "chrono": "cpp",
         "format": "cpp",
-        "forward_list": "cpp"
+        "forward_list": "cpp",
+        "algorithm": "cpp",
+        "charconv": "cpp",
+        "iomanip": "cpp",
+        "sstream": "cpp",
+        "xlocmon": "cpp",
+        "locale": "cpp",
+        "mutex": "cpp",
+        "optional": "cpp",
+        "ratio": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp",
+        "xlocbuf": "cpp",
+        "xlocmes": "cpp",
+        "xloctime": "cpp"
     }
 }

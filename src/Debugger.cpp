@@ -27,6 +27,7 @@ int main()
     Lexer lexer = Lexer(fileText);
 
     lexer.Lex();
+    lexer.Tokenize();
 
     list<string> lines = lexer.GetCodeWords();
     auto end_time = high_resolution_clock::now();

@@ -1,10 +1,21 @@
 #pragma once
 
 #include <unordered_set>
+#include <cctype>
 #include "Utils.h"
 
 using namespace Utils;
 
+
+class Token {
+public:
+	Token(int wordNum) : wordNum(wordNum) {}
+
+	int GetWordNumber() { return this->wordNum; }
+
+private:
+	int wordNum;
+};
 
 class Lexer {
 public:
@@ -26,6 +37,8 @@ private:
 	int codeTextLength = 0;
 	list<string> codeLines;
 	list<string> codeWords;
+	
+	list<Token> tokens;
 
 	void RemoveSLComments();
 	void RemoveMLComments();
