@@ -59,7 +59,7 @@ void Lexer::Lex() {
 void Lexer::Tokenize() {
 	if (!this->Lexed) { error("You did not lex yet!"); return; }
 
-	for (auto it = this->codeLines.begin(); it != this->codeLines.end(); ++it) {
+	for (auto it = this->codeWords.begin(); it != this->codeWords.end(); ++it) {
 		string lineText = *it;
         
     }
