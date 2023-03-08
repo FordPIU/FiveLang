@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(FiveLang VERSION 0.1)
 
+file(GLOB UTILSOURCES "Utils/*.cpp")
+add_executable(FiveLang ${UTILSOURCES})
 add_executable(FiveLang Debugger.cpp)
 
 set(CMAKE_CXX_STANDARD 20)
