@@ -68,5 +68,6 @@
         "xlocbuf": "cpp",
         "xlocmes": "cpp",
         "xloctime": "cpp"
-    }
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

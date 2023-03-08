@@ -42,3 +42,17 @@ public:
 private:
 	string defName;
 };
+
+class TOKEN_FUNCTION : public Token {
+public:
+	TOKEN_FUNCTION(int wordNum, string defHardType, string defName) : Token(wordNum), defHardType(defHardType), defName(defName) {}
+
+	void output_class() override { printLn(this->GetTypeName() + " Name: " + this->defName + "\nHard Type: " + this->defHardType); }
+
+    string GetTypeName() { return "Function"; }
+	string GetClassName() { return this->defName; }
+
+private:
+	string defName;
+	string defHardType;
+};

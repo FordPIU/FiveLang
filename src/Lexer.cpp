@@ -76,10 +76,28 @@ void Lexer::Tokenize() {
 		int i = static_cast<int>(distance(this->codeWords.begin(), it));
         string currentWord = *it;
 		string nextWord = "";
+		string next2Word = "";
+		string next3Word = "";
+		string next4Word = "";
 		
 		auto nextIt = next(it);
 		if (nextIt != this->codeWords.end()) {
 			nextWord = *nextIt;
+
+			auto next2It = next(nextIt);
+			if (next2It != this->codeWords.end()) {
+				next2Word = *next2It;
+
+				auto next3It = next(next2It);
+				if (next3It != this->codeWords.end()) {
+					next3Word = *next3It;
+
+					auto next4It = next(next3It);
+					if (next4It != this->codeWords.end()) {
+						next4Word = *next4It;
+					}
+				}
+			}
 		}
 
 		if (currentWord == "class") {
@@ -87,6 +105,7 @@ void Lexer::Tokenize() {
 				this->tokens.push_back(new TOKEN_CLASS(i, nextWord));
 
 				++it;
+				continue;
 			} else {
 				error("Class Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + nextWord);
 				return;
@@ -96,9 +115,30 @@ void Lexer::Tokenize() {
 				this->tokens.push_back(new TOKEN_THREAD(i, nextWord));
 
 				++it;
+				continue;
 			} else {
 				error("Thread Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + nextWord);
 				return;
+			}
+		} else if (currentWord == "function") {
+			if (!nextWord.empty()) {
+				if (hasNoCharactersInString(nextWord)) {
+					this->tokens.push_back(new TOKEN_FUNCTION(i, "none", nextWord));
+				} else if (nextWord == "{" && hasNoCharactersInString(next2Word)) {
+					this->tokens.push_back(new TOKEN_FUNCTION(i, next2Word, next4Word));
+
+					++it;
+					++it;
+					++it;
+					++it;
+					++it;
+				} else {
+					error("Function Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + nextWord);
+					return;
+				}
+
+				++it;
+				continue;
 			}
 		}
 	}
@@ -260,7 +300,6 @@ void Lexer::ChunkifyByWords() {
             size_t nextDelimiterPos = lineText.find_first_of(delimiters, pos);
 
             if (nextDelimiterPos == string::npos) {
-                // No more delimiters found in the line
                 token = lineText.substr(pos);
                 pos = lineText.length();
             } else {
@@ -270,6 +309,14 @@ void Lexer::ChunkifyByWords() {
 
             if (!token.empty()) {
                 wordsList.push_back(token);
+            }
+
+			if (nextDelimiterPos != string::npos) {
+                string delimiter = lineText.substr(nextDelimiterPos, 1);
+
+				if (delimiter != "\n" && delimiter != " ") {
+					wordsList.push_back(delimiter);
+				}
             }
         }
     }
