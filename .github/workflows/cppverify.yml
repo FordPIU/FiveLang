@@ -17,7 +17,7 @@ jobs:
         path: 'FLang-RTC' # replace with the name of your sub-folder
 
     - name: Install Visual Studio 2019 Build Tools
-      uses: microsoft/setup-msbuild@v1.0.5
+      uses: microsoft/setup-msbuild@v1.0.6
 
     - name: Install C++20 support for MSBuild
       run: |
