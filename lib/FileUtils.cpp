@@ -2,12 +2,14 @@
 
 
 string FileUtils::GetFileText(string FilePath) {
-    ifstream input_file("../Example.flang");
+    printLn("Loading File from " + FilePath);
+
+    ifstream input_file(FilePath);
 
     if (!input_file) { error("Invalid file path!"); return 0; }
 
     input_file.seekg(0, input_file.end);
-    int length = input_file.tellg();
+    int length = static_cast<int>(input_file.tellg());
     input_file.seekg(0, input_file.beg);
 
     char* buffer = new char[length];

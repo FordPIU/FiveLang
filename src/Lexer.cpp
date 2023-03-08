@@ -1,67 +1,5 @@
 #include "Lexer.h"
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-
-
-class TextRange {
-public:
-	TextRange(int start, int end) : start(start), end(end) {}
-
-	int start;
-	int end;
-};
-
-
-
-void visualizeCode(int prevPos, int currPos, string codeText, bool isHighlighted)
-{
-	if (true) { return; }
-
-	int method = 1;
-
-	if (method == 0) {
-		system("cls");
-
-		for (int i = 0; i < codeText.size(); ++i) {
-			if (i == prevPos || i == currPos) {
-				if (isHighlighted) {
-					cout << "\033[97;43m" << codeText[i] << "\033[0m"; // white on yellow for comment
-				}
-				else {
-					cout << "\033[97;41m" << codeText[i] << "\033[0m"; // white on red for code
-				}
-			}
-			else {
-				cout << codeText[i];
-			}
-		}
-
-		cout << endl;
-	}
-	else {
-		HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-
-		COORD topLeft = { 0, 0 };
-		SetConsoleCursorPosition(console, topLeft);
-
-		for (int i = 0; i < codeText.size(); ++i) {
-			if (i == prevPos || i == currPos) {
-				if (isHighlighted) {
-					std::cout << "\033[33m" << codeText[i] << "\033[0m"; // yellow for comment
-				}
-				else {
-					std::cout << "\033[31m" << codeText[i] << "\033[0m"; // red for code
-				}
-			}
-			else {
-				std::cout << codeText[i];
-			}
-		}
-
-		std::cout << std::endl;
-	}
-}
 
 string removeRangesFromText(list<TextRange> ranges, string codeText) {
 	string workingText = codeText;
@@ -91,7 +29,7 @@ Lexer::Lexer(string rawFileText) {
 
 	// Actually set
 	this->fileText = rawFileText;
-	this->fileTextLength = rawFileText.length();
+	this->fileTextLength = static_cast<int>(rawFileText.length());
 }
 
 
@@ -101,11 +39,10 @@ void Lexer::Lex() {
 	this->codeTextLength = this->fileTextLength;
 
 	this->RemoveSLComments();
-	system("cls");
+	this->RemoveMLComments();
 	this->RemoveSoLSpaces();
 
 	this->ChunkifyByLine();
-	//this->ChunkifyByBody();
 }
 
 
@@ -144,9 +81,42 @@ void Lexer::RemoveSLComments() {
 				commentStart = 0;
 			}
 		}
-
-		visualizeCode(i, i - 1, this->codeText, workingInComment);
 	}
+
+	string newText = removeRangesFromText(ranges, this->codeText);
+
+	this->newText(newText);
+}
+
+void Lexer::RemoveMLComments() {
+	list<TextRange> ranges;
+	bool workingInComment = false;
+	int commentStart = 0;
+
+	for (int i = 0; i < this->codeTextLength; ++i) {
+        char currentChar = this->codeText[i];
+        char nextChar;
+
+        if (i == this->codeTextLength - 1) {
+            nextChar = ' ';
+        } else {
+            nextChar = this->codeText[i + 1];
+        }
+
+        if (!workingInComment && currentChar == '/' && nextChar == '*') {
+            workingInComment = true;
+            commentStart = i;
+
+            ++i;
+        } else if (workingInComment && currentChar == '*' && nextChar == '/') {
+			ranges.push_back(TextRange(commentStart, i + 2));
+
+            workingInComment = false;
+			commentStart = 0;
+
+            ++i;
+        }
+    }
 
 	string newText = removeRangesFromText(ranges, this->codeText);
 
@@ -161,21 +131,22 @@ void Lexer::RemoveSoLSpaces() {
 
 	for (int i = 0; i < (this->codeTextLength - 1); ++i) {
 		char currentChar = this->codeText[i];
-
-		if (foundSpace == false && currentChar == ' ' && newLine == true) {
+		char nextChar = this->codeText[i + 1];
+		
+		if (currentChar == ' ' && (i == 0 || this->codeText[i - 1] == '\n')) {
 			start = i;
-			foundSpace = true;
-			newLine = false;
 		}
-		else if (foundSpace == true && currentChar != ' ') {
+		else if (start != -1 && nextChar != '\n' && currentChar != ' ') {
 			ranges.push_back(TextRange(start, i));
-			foundSpace = false;
+			start = -1;
 		}
+	}
 
-		if (currentChar == '\n') { newLine = true; }
-
-		if (start != -1) {
-			visualizeCode(start, i, this->codeText, foundSpace);
+	if (this->codeText[this->codeTextLength - 2] == ' ') {
+		int i = this->codeTextLength - 2;
+		while (i >= 0 && this->codeText[i] == ' ') {
+			ranges.push_back(TextRange(i, i + 1));
+			--i;
 		}
 	}
 
@@ -217,15 +188,7 @@ void Lexer::ChunkifyByLine() {
 	this->codeLines = lineList;
 }
 
-void Lexer::ChunkifyByBody() {
-	list<string> newCodeBodys;
-
-
-}
-
-
-
 void Lexer::newText(string newText) {
 	this->codeText = newText;
-	this->codeTextLength = newText.length();
+	this->codeTextLength = static_cast<int>(newText.length());
 }

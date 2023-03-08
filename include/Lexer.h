@@ -6,6 +6,31 @@
 using namespace Utils;
 
 
+class TextRange {
+public:
+	TextRange(int start, int end) : start(start), end(end) {}
+
+	int start;
+	int end;
+};
+
+class TextBody {
+public:
+	TextBody(int start, int end, string codeText) {
+		this->start = start;
+		this->end = end;
+		this->bodyText = codeText.substr(start, end);
+		this->subBodies = {};
+	}
+
+	int start = 0;
+	int end = 0;
+
+	string bodyText = "";
+	list<TextBody> subBodies = {};
+};
+
+
 class Lexer {
 public:
 	Lexer(string rawFileText);
@@ -14,7 +39,7 @@ public:
 
 	string GetCodeText() { return this->codeText; }
 	list<string> GetCodeLines() { return this->codeLines; }
-	list<string> GetCodeBodys() { return this->codeBodys; }
+	list<TextBody> GetCodeBodies() { return this->codeBodies; }
 
 private:
 	string fileText;
@@ -23,13 +48,13 @@ private:
 	string codeText;
 	int codeTextLength = 0;
 	list<string> codeLines;
-	list<string> codeBodys;
+	list<TextBody> codeBodies;
 
 	void RemoveSLComments();
+	void RemoveMLComments();
 	void RemoveSoLSpaces();
 
 	void ChunkifyByLine();
-	void ChunkifyByBody();
 
 	void newText(string newText);
 };

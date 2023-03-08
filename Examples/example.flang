@@ -49,3 +49,15 @@ var3 = "Hello World!"
 
 var4, var 5 = "commentexample", // this is a comment // "this is not a comment"
 // end of file comment
+
+/*
+Multi line comment Test
+
+hopefully this isnt here after compiling
+*/
+
+/*
+
+Multi line comment #2
+
+*/var6 = "testing"
