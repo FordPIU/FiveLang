@@ -1,0 +1,36 @@
+name: C++20 Validation Workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+        path: 'FLang-RTC' # replace with the name of your sub-folder
+
+    - name: Install Visual Studio 2019 Build Tools
+      uses: microsoft/setup-msbuild@v1.0.5
+
+    - name: Install C++20 support for MSBuild
+      run: |
+        vs_buildtools.exe --add Microsoft.VisualStudio.Component.VC.ClangC2 --add Microsoft.VisualStudio.Component.VC.14.28.x86.x64 --quiet --norestart
+
+    - name: Build the Visual Studio project
+      run: |
+        msbuild.exe FLang-RTC/FLang-RTC.sln /t:Rebuild /p:Configuration=Release /p:Platform=x64
+
+    - name: Run unit tests with Catch2
+      run: |
+        FLang-RTC/FLang-RTC.Tests.exe --success
+
+    - name: Validate C++20 syntax with Clang-Tidy
+      run: |
+        clang-tidy.exe -checks=* FLang-RTC/src/*.cpp FLang-RTC/include/*.h
