@@ -2,8 +2,8 @@
 
 #include<list>
 
-#include "Utils/ConsoleUtils.h"
-#include "Utils/FileUtils.h"
+#include "ConsoleUtils.h"
+#include "FileUtils.h"
 
 
 namespace Utils {
