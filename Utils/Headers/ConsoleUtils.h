@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 namespace ConsoleUtils {
 	void printLn(string msg) { cout << msg << endl; }
 

@@ -5,7 +5,7 @@
 
 using namespace Utils;
 
-// C++ Main //
+
 int main()
 {
     string fileText = GetFileText(".Examples/example.clang") + '\n';
