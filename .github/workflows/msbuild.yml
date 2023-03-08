@@ -27,4 +27,4 @@ jobs:
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
 
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:LanguageStandard=c++20 ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:LanguageStandard=c++17 ${{env.SOLUTION_FILE_PATH}}
