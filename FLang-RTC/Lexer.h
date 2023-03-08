@@ -5,6 +5,7 @@
 
 using namespace Utils;
 
+
 class Lexer {
 public:
 	Lexer(string rawFileText);
