@@ -23,7 +23,7 @@ int main()
     // Lexer Test
     printLn("Starting Lexer Test!");
 
-    string fileText = GetFileText("D:/Github/FiveLang/Examples/example.flang") + '\n';
+    string fileText = GetFileText("D:/Github/FiveLang/Examples/example.flang");
     Lexer lexer = Lexer(fileText);
 
     lexer.Lex();

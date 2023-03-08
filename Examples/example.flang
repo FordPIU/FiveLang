@@ -44,10 +44,10 @@ function {float} HardDefinedReturn() {
 }
 
 // Quickie Test
-var1 = 525; var2 = 5892
-var3 = "Hello World!"
+var1 {int} = 525; var2 = 5892 // hard type definition variable
+var3{string} = "Hello World!"
 
-var4, var 5 = "commentexample", // this is a comment // "this is not a comment"
+var4, var5 = "commentexample", // this is a comment // "this is not a comment"
 // end of file comment
 
 /*

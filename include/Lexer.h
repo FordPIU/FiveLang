@@ -36,6 +36,8 @@ private:
 	void RemoveMLComments();
 	void RemoveSoLSpaces();
 
+	void AdjustSpacingInStrings();
+
 	void ChunkifyByLine();
 	void ChunkifyByWords();
 

@@ -56,3 +56,18 @@ private:
 	string defName;
 	string defHardType;
 };
+
+class TOKEN_VARIABLE : public Token {
+public:
+	TOKEN_VARIABLE(int wordNum, string defHardType, string defName, string defValue) : Token(wordNum), defHardType(defHardType), defName(defName), defValue(defValue) {}
+
+	void output_class() override { printLn(this->GetTypeName() + " Name: " + this->defName + "\nHard Type: " + this->defHardType + "\nValue: " + this->defValue); }
+
+    string GetTypeName() { return "Variable"; }
+	string GetClassName() { return this->defName; }
+
+private:
+	string defName;
+	string defHardType;
+	string defValue;
+};

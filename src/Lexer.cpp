@@ -65,6 +65,8 @@ void Lexer::Lex() {
 	this->RemoveMLComments();
 	this->RemoveSoLSpaces();
 
+	this->AdjustSpacingInStrings();
+
 	this->ChunkifyByLine();
 	this->ChunkifyByWords();
 }
@@ -75,10 +77,14 @@ void Lexer::Tokenize() {
 	for (auto it = this->codeWords.begin(); it != this->codeWords.end(); ++it) {
 		int i = static_cast<int>(distance(this->codeWords.begin(), it));
         string currentWord = *it;
+
+		if (currentWord == "\n") { continue; }
+
 		string nextWord = "";
 		string next2Word = "";
 		string next3Word = "";
 		string next4Word = "";
+		string next5Word = "";
 		
 		auto nextIt = next(it);
 		if (nextIt != this->codeWords.end()) {
@@ -95,6 +101,11 @@ void Lexer::Tokenize() {
 					auto next4It = next(next3It);
 					if (next4It != this->codeWords.end()) {
 						next4Word = *next4It;
+
+						auto next5It = next(next4It);
+						if (next5It != this->codeWords.end()) {
+							next5Word = *next5It;
+						}
 					}
 				}
 			}
@@ -124,11 +135,9 @@ void Lexer::Tokenize() {
 			if (!nextWord.empty()) {
 				if (hasNoCharactersInString(nextWord)) {
 					this->tokens.push_back(new TOKEN_FUNCTION(i, "none", nextWord));
-				} else if (nextWord == "{" && hasNoCharactersInString(next2Word)) {
+				} else if (nextWord == "{" && next3Word == "}" && hasNoCharactersInString(next2Word)) {
 					this->tokens.push_back(new TOKEN_FUNCTION(i, next2Word, next4Word));
 
-					++it;
-					++it;
 					++it;
 					++it;
 					++it;
@@ -256,6 +265,20 @@ void Lexer::RemoveSoLSpaces() {
 
 
 
+void Lexer::AdjustSpacingInStrings() {
+    bool inString = false;
+
+    for (char& c : this->codeText) {
+        if (c == '"') {
+            inString = !inString;
+        } else if (inString && c == ' ') {
+            c = '_';
+        }
+    }
+}
+
+
+
 void Lexer::ChunkifyByLine() {
 	list<string> lineList;
 	string workingLine = "";
@@ -289,7 +312,7 @@ void Lexer::ChunkifyByLine() {
 
 void Lexer::ChunkifyByWords() {
     list<string> wordsList;
-    string delimiters = " ,;({})\"\'";
+    string delimiters = " ,;({})\n";
 
     for (auto it = this->codeLines.begin(); it != this->codeLines.end(); ++it) {
         string lineText = *it;
