@@ -1,6 +1,15 @@
 #include "Lexer.h"
 
 
+class TextRange {
+public:
+	TextRange(int start, int end) : start(start), end(end) {}
+
+	int start;
+	int end;
+};
+
+
 string removeRangesFromText(list<TextRange> ranges, string codeText) {
 	string workingText = codeText;
 	int removalOffset = 0;
@@ -37,12 +46,23 @@ Lexer::Lexer(string rawFileText) {
 void Lexer::Lex() {
 	this->codeText = this->fileText;
 	this->codeTextLength = this->fileTextLength;
+	this->Lexed = true;
 
 	this->RemoveSLComments();
 	this->RemoveMLComments();
 	this->RemoveSoLSpaces();
 
 	this->ChunkifyByLine();
+	this->ChunkifyByWords();
+}
+
+void Lexer::Tokenize() {
+	if (!this->Lexed) { error("You did not lex yet!"); return; }
+
+	for (auto it = this->codeLines.begin(); it != this->codeLines.end(); ++it) {
+		string lineText = *it;
+        
+    }
 }
 
 
@@ -186,6 +206,33 @@ void Lexer::ChunkifyByLine() {
 	}
 
 	this->codeLines = lineList;
+}
+
+void Lexer::ChunkifyByWords() {
+	list<string> wordsList;
+
+	for (auto it = this->codeLines.begin(); it != this->codeLines.end(); ++it) {
+		string lineText = *it;
+		string delimiter = " ";
+		size_t pos = 0;
+		string token;
+
+		while ((pos = lineText.find(delimiter)) != string::npos) {
+			token = lineText.substr(0, pos);
+
+			if (!token.empty()) {
+				wordsList.push_back(token);
+			}
+
+			lineText.erase(0, pos + delimiter.length());
+		}
+
+		if (!lineText.empty()) {
+			wordsList.push_back(lineText);
+		}
+    }
+
+	this->codeWords = wordsList;
 }
 
 void Lexer::newText(string newText) {

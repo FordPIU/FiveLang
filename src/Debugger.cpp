@@ -24,7 +24,7 @@ int main()
 
     lexer.Lex();
 
-    list<string> lines = lexer.GetCodeLines();
+    list<string> lines = lexer.GetCodeWords();
 
     for (auto it = lines.begin(); it != lines.end(); ++it) {
         printLn(*it);
