@@ -60,7 +60,7 @@ int main()
             }
         }
         else if (input == "token_list") {
-            list<Token*> token_list = lexer.GetTokens();
+            list<TOKEN*> token_list = lexer.GetTokens();
             int i = 0;
 
             for (auto token : token_list) {

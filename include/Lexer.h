@@ -19,7 +19,7 @@ public:
 	string GetCodeText() { return this->codeText; }
 	list<string> GetCodeLines() { return this->codeLines; }
 	list<string> GetCodeWords() { return this->codeWords; }
-	list<Token*> GetTokens() { return this->tokens; }
+	list<TOKEN*> GetTokens() { return this->tokens; }
 
 private:
 	string fileText;
@@ -31,7 +31,7 @@ private:
 	list<string> codeLines;
 	list<string> codeWords;
 	
-	list<Token*> tokens = {};
+	list<TOKEN*> tokens = {};
 
 	void RemoveSLComments();
 	void RemoveMLComments();

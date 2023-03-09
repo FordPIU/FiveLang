@@ -14,9 +14,11 @@ void ConsoleUtils::printLn(int msg) {
 }
 
 void ConsoleUtils::error(string out) {
-	cerr << out;
+	cerr << out << endl;
+	throw runtime_error(out);
 }
 
 void ConsoleUtils::error(char out) {
-	cerr << out;
+	cerr << out << endl;
+	throw runtime_error(to_string(out));
 }

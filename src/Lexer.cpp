@@ -9,6 +9,13 @@ public:
 	int end;
 };
 
+class SurroudingWords {
+public:
+	vector<string> forward;
+	vector<string> backward;
+	string middle;
+};
+
 
 
 string removeRangesFromText(list<TextRange> ranges, string codeText) {
@@ -39,36 +46,28 @@ bool hasNoCharactersInString(const string& word) {
     return true;
 }
 
-vector<string> getSurroundingListItems(int depth, list<string>::iterator it, list<string>& lst) {
-	vector<string> result;
+SurroudingWords getSurroundingListItems(int depth, list<string>::iterator it, list<string>& lst) {
+	SurroudingWords result;
 
     auto prevIt = it;
     auto nextIt = it;
 
-    // Advance prevIt and nextIt n times
-    for (int i = 0; i < depth; i++) {
-        if (prevIt != lst.begin()) {
-            --prevIt;
-        }
-        if (nextIt != lst.end()) {
-            ++nextIt;
-        }
+	result.middle = *it;
+
+	for (int i = 0; i < depth; ++i) {
+        result.forward.push_back("");
+		result.backward.push_back("");
     }
 
-    // Add the previous n words to the result
-    while (prevIt != it) {
-        result.push_back(*prevIt);
-        ++prevIt;
-    }
+	for (int i = 0; i < depth; ++i) {
+		if (nextIt == lst.end()) { break; } else { ++nextIt; }
+		result.forward[i] = (nextIt == lst.end()) ? "" : *nextIt;
+	}
 
-    // Add the current word to the result
-    result.push_back(*it);
-
-    // Add the next n words to the result
-    while (nextIt != lst.end() && (nextIt != it || result.size() < 2*depth+1)) {
-        result.push_back(*nextIt);
-        ++nextIt;
-    }
+	for (int i = 0; i < depth; ++i) {
+		if (prevIt == lst.begin()) { break; } else { --prevIt; }
+		result.backward[i] = *prevIt;
+	}
 
     return result;
 }
@@ -109,61 +108,23 @@ void Lexer::Tokenize() {
 	if (!this->Lexed) { error("You did not lex yet!"); return; }
 
 	for (auto it = this->codeWords.begin(); it != this->codeWords.end(); ++it) {
-		int i 					= static_cast<int>(distance(this->codeWords.begin(), it));
-        vector<string> words 	= getSurroundingListItems(5, it, this->codeWords);
-		string previous5Word 	= words[0];
-		string previous4Word 	= words[1];
-		string previous3Word 	= words[2];
-		string previous2Word 	= words[3];
-		string previous1Word 	= words[4];
-		string currentWord 		= words[5];
-		string next1Word 		= words[6];
-		string next2Word 		= words[7];
-		string next3Word 		= words[8];
-		string next4Word 		= words[9];
-		string next5Word 		= words[10];
+		int i = static_cast<int>(distance(this->codeWords.begin(), it));
+        SurroudingWords words = getSurroundingListItems(5, it, this->codeWords);
 
-		if (currentWord == "\n") { continue; }
+		printLn("\nCurrent Word: " + words.middle);
+		printLn("Previous Word #1: " + words.backward[0]);
+		printLn("Previous Word #2: " + words.backward[1]);
+		printLn("Previous Word #3: " + words.backward[2]);
+		printLn("Previous Word #4: " + words.backward[3]);
+		printLn("Previous Word #5: " + words.backward[4]);
+		printLn("Next Word #1: " + words.forward[0]);
+		printLn("Next Word #2: " + words.forward[1]);
+		printLn("Next Word #3: " + words.forward[2]);
+		printLn("Next Word #4: " + words.forward[3]);
+		printLn("Next Word #5: " + words.forward[4]);
 
-		if (currentWord == "class") {
-			if (!next1Word.empty() && hasNoCharactersInString(next1Word)) {
-				this->tokens.push_back(new TOKEN_CLASS(i, next1Word));
-
-				++it;
-				continue;
-			} else {
-				error("Class Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + next1Word);
-				return;
-			}
-		} else if (currentWord == "thread") {
-			if (!next1Word.empty() && hasNoCharactersInString(next1Word)) {
-				this->tokens.push_back(new TOKEN_THREAD(i, next1Word));
-
-				++it;
-				continue;
-			} else {
-				error("Thread Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + next1Word);
-				return;
-			}
-		} else if (currentWord == "function") {
-			if (!next1Word.empty()) {
-				if (hasNoCharactersInString(next1Word)) {
-					this->tokens.push_back(new TOKEN_FUNCTION(i, "none", next1Word));
-				} else if (next1Word == "{" && next3Word == "}" && hasNoCharactersInString(next2Word)) {
-					this->tokens.push_back(new TOKEN_FUNCTION(i, next2Word, next4Word));
-
-					++it;
-					++it;
-					++it;
-				} else {
-					error("Function Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + next1Word);
-					return;
-				}
-
-				++it;
-				continue;
-			}
-		}
+		//TOKEN_CLASS newToken = TOKEN_CLASS(i, "r" + to_string(i));
+		//newToken.create_class();
 	}
 }
 
