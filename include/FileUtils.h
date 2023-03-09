@@ -1,14 +1,11 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <fstream>
+#include "CommonLibs.h"
 #include "ConsoleUtils.h"
 
-using namespace std;
 using namespace ConsoleUtils;
 
-
-namespace FileUtils {
+namespace FileUtils
+{
 	string GetFileText(string FilePath);
 }

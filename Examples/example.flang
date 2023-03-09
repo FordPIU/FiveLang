@@ -64,3 +64,6 @@ Multi line comment #2
 
 var7 = 01;var8 = 592
 var9 = 0852; var10 = 5825125
+
+
+//// this is a multiple slash test

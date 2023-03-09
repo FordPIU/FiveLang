@@ -1,15 +1,13 @@
 #pragma once
 
-#include <unordered_set>
-#include <cctype>
-#include <vector>
+#include "CommonLibs.h"
 #include "Utils.h"
 #include "Tokens.h"
 
 using namespace Utils;
 
-
-class Lexer {
+class Lexer
+{
 public:
 	Lexer(string rawFileText);
 
@@ -19,7 +17,7 @@ public:
 	string GetCodeText() { return this->codeText; }
 	list<string> GetCodeLines() { return this->codeLines; }
 	list<string> GetCodeWords() { return this->codeWords; }
-	list<TOKEN*> GetTokens() { return this->tokens; }
+	list<TOKEN *> GetTokens() { return this->tokens; }
 
 private:
 	string fileText;
@@ -30,14 +28,8 @@ private:
 	int codeTextLength = 0;
 	list<string> codeLines;
 	list<string> codeWords;
-	
-	list<TOKEN*> tokens = {};
 
-	void RemoveSLComments();
-	void RemoveMLComments();
-	void RemoveSoLSpaces();
-
-	void AdjustSpacingInStrings();
+	list<TOKEN *> tokens = {};
 
 	void ChunkifyByLine();
 	void ChunkifyByWords();

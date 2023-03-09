@@ -1,13 +1,9 @@
 #pragma once
 
+#include "CommonLibs.h"
 
-#include <iostream>
-#include <string>
-
-using namespace std;
-
-
-namespace ConsoleUtils {
+namespace ConsoleUtils
+{
 	void printLn(string msg);
 	void printLn(char msg);
 	void printLn(int msg);

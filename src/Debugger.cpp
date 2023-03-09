@@ -5,12 +5,24 @@
 
 #include "Utils.h"
 #include "Lexer.h"
+#include "Input.h"
 
 using namespace Utils;
 using namespace chrono;
 
+void temp()
+{
+    Input input = Input("D:/Github/FiveLang/Examples/example.flang");
+    printLn(input.GetWorkingText());
+    while (true)
+    {
+    };
+}
+
 int main()
 {
+    temp();
+
     // Start Timer
     auto start_time = high_resolution_clock::now();
 
@@ -37,39 +49,49 @@ int main()
 
     string input;
 
-    while(true) {
+    while (true)
+    {
         printLn("\n---------------------\nEnter a new command:\nexit - Close the program.\nquit - Close the program.\n\nword_list - List of all words in lexer.\nline_list - List of all lines in lexer.\ntoken_list - List of all tokens in lexer.\n---------------------");
         getline(cin, input);
 
-        transform(input.begin(), input.end(), input.begin(), [](unsigned char c){ return std::tolower(c); });
+        transform(input.begin(), input.end(), input.begin(), [](unsigned char c)
+                  { return std::tolower(c); });
 
-        if (input == "exit" || input == "quit") {
+        if (input == "exit" || input == "quit")
+        {
             printLn("\nExiting Program...");
             return 0;
         }
-        else if (input == "word_list") {
+        else if (input == "word_list")
+        {
             list<string> word_list = lexer.GetCodeWords();
-            for (auto it = word_list.begin(); it != word_list.end(); ++it) {
+            for (auto it = word_list.begin(); it != word_list.end(); ++it)
+            {
                 printLn(*it);
             }
         }
-        else if (input == "line_list") {
+        else if (input == "line_list")
+        {
             list<string> line_list = lexer.GetCodeLines();
-            for (auto it = line_list.begin(); it != line_list.end(); ++it) {
+            for (auto it = line_list.begin(); it != line_list.end(); ++it)
+            {
                 printLn(*it);
             }
         }
-        else if (input == "token_list") {
-            list<TOKEN*> token_list = lexer.GetTokens();
+        else if (input == "token_list")
+        {
+            list<TOKEN *> token_list = lexer.GetTokens();
             int i = 0;
 
-            for (auto token : token_list) {
+            for (auto token : token_list)
+            {
                 i++;
                 printLn("\nToken #: " + to_string(i));
                 token->output_class();
             }
         }
-        else {
+        else
+        {
             printLn("\nYou entered a unknown");
         }
     }
