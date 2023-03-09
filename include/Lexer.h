@@ -2,6 +2,7 @@
 
 #include <unordered_set>
 #include <cctype>
+#include <vector>
 #include "Utils.h"
 #include "Tokens.h"
 

@@ -39,6 +39,40 @@ bool hasNoCharactersInString(const string& word) {
     return true;
 }
 
+vector<string> getSurroundingListItems(int depth, list<string>::iterator it, list<string>& lst) {
+	vector<string> result;
+
+    auto prevIt = it;
+    auto nextIt = it;
+
+    // Advance prevIt and nextIt n times
+    for (int i = 0; i < depth; i++) {
+        if (prevIt != lst.begin()) {
+            --prevIt;
+        }
+        if (nextIt != lst.end()) {
+            ++nextIt;
+        }
+    }
+
+    // Add the previous n words to the result
+    while (prevIt != it) {
+        result.push_back(*prevIt);
+        ++prevIt;
+    }
+
+    // Add the current word to the result
+    result.push_back(*it);
+
+    // Add the next n words to the result
+    while (nextIt != lst.end() && (nextIt != it || result.size() < 2*depth+1)) {
+        result.push_back(*nextIt);
+        ++nextIt;
+    }
+
+    return result;
+}
+
 
 
 Lexer::Lexer(string rawFileText) {
@@ -75,74 +109,54 @@ void Lexer::Tokenize() {
 	if (!this->Lexed) { error("You did not lex yet!"); return; }
 
 	for (auto it = this->codeWords.begin(); it != this->codeWords.end(); ++it) {
-		int i = static_cast<int>(distance(this->codeWords.begin(), it));
-        string currentWord = *it;
+		int i 					= static_cast<int>(distance(this->codeWords.begin(), it));
+        vector<string> words 	= getSurroundingListItems(5, it, this->codeWords);
+		string previous5Word 	= words[0];
+		string previous4Word 	= words[1];
+		string previous3Word 	= words[2];
+		string previous2Word 	= words[3];
+		string previous1Word 	= words[4];
+		string currentWord 		= words[5];
+		string next1Word 		= words[6];
+		string next2Word 		= words[7];
+		string next3Word 		= words[8];
+		string next4Word 		= words[9];
+		string next5Word 		= words[10];
 
 		if (currentWord == "\n") { continue; }
 
-		string nextWord = "";
-		string next2Word = "";
-		string next3Word = "";
-		string next4Word = "";
-		string next5Word = "";
-		
-		auto nextIt = next(it);
-		if (nextIt != this->codeWords.end()) {
-			nextWord = *nextIt;
-
-			auto next2It = next(nextIt);
-			if (next2It != this->codeWords.end()) {
-				next2Word = *next2It;
-
-				auto next3It = next(next2It);
-				if (next3It != this->codeWords.end()) {
-					next3Word = *next3It;
-
-					auto next4It = next(next3It);
-					if (next4It != this->codeWords.end()) {
-						next4Word = *next4It;
-
-						auto next5It = next(next4It);
-						if (next5It != this->codeWords.end()) {
-							next5Word = *next5It;
-						}
-					}
-				}
-			}
-		}
-
 		if (currentWord == "class") {
-			if (!nextWord.empty() && hasNoCharactersInString(nextWord)) {
-				this->tokens.push_back(new TOKEN_CLASS(i, nextWord));
+			if (!next1Word.empty() && hasNoCharactersInString(next1Word)) {
+				this->tokens.push_back(new TOKEN_CLASS(i, next1Word));
 
 				++it;
 				continue;
 			} else {
-				error("Class Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + nextWord);
+				error("Class Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + next1Word);
 				return;
 			}
 		} else if (currentWord == "thread") {
-			if (!nextWord.empty() && hasNoCharactersInString(nextWord)) {
-				this->tokens.push_back(new TOKEN_THREAD(i, nextWord));
+			if (!next1Word.empty() && hasNoCharactersInString(next1Word)) {
+				this->tokens.push_back(new TOKEN_THREAD(i, next1Word));
 
 				++it;
 				continue;
 			} else {
-				error("Thread Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + nextWord);
+				error("Thread Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + next1Word);
 				return;
 			}
 		} else if (currentWord == "function") {
-			if (!nextWord.empty()) {
-				if (hasNoCharactersInString(nextWord)) {
-					this->tokens.push_back(new TOKEN_FUNCTION(i, "none", nextWord));
-				} else if (nextWord == "{" && next3Word == "}" && hasNoCharactersInString(next2Word)) {
+			if (!next1Word.empty()) {
+				if (hasNoCharactersInString(next1Word)) {
+					this->tokens.push_back(new TOKEN_FUNCTION(i, "none", next1Word));
+				} else if (next1Word == "{" && next3Word == "}" && hasNoCharactersInString(next2Word)) {
 					this->tokens.push_back(new TOKEN_FUNCTION(i, next2Word, next4Word));
 
 					++it;
 					++it;
 					++it;
 				} else {
-					error("Function Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + nextWord);
+					error("Function Name is Invalid, at Word #" + to_string(i+1) + "\nInvalid Word is: " + next1Word);
 					return;
 				}
 
