@@ -3,21 +3,16 @@
 #include "CommonLibs.h"
 #include "Utils.h"
 #include "Tokens.h"
+#include "Input.h"
 
 using namespace Utils;
 
 class Lexer
 {
 public:
-	Lexer(string rawFileText);
+	Lexer(Input fileInput);
 
-	void Lex();
-	void Tokenize();
-
-	string GetCodeText() { return this->codeText; }
-	list<string> GetCodeLines() { return this->codeLines; }
-	list<string> GetCodeWords() { return this->codeWords; }
-	list<TOKEN *> GetTokens() { return this->tokens; }
+	vector<TOKEN *> getTokens() { return this->tokens; };
 
 private:
 	string fileText;
@@ -29,5 +24,5 @@ private:
 	list<string> codeLines;
 	list<string> codeWords;
 
-	list<TOKEN *> tokens = {};
+	vector<TOKEN *> tokens = {};
 };

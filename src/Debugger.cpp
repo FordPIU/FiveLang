@@ -10,28 +10,8 @@
 using namespace Utils;
 using namespace chrono;
 
-void temp()
-{
-    Input input = Input("D:/Github/FiveLang/Examples/example.flang");
-    vector<string> word_list = splitWords(input.GetWorkingText(), "\n{()}[]+=-,<.>", true);
-
-    int i = 0;
-    for (auto it = word_list.begin(); it != word_list.end(); ++it)
-    {
-        i++;
-        string wordNum = "Word #" + to_string(i);
-        string hdr = wordNum + ": ";
-        printLn(hdr + *it);
-    }
-    while (true)
-    {
-    };
-}
-
 int main()
 {
-    temp();
-
     // Start Timer
     auto start_time = high_resolution_clock::now();
 
@@ -44,13 +24,9 @@ int main()
     // Lexer Test
     printLn("Starting Lexer Test!");
 
-    string fileText = GetFileText("D:/Github/FiveLang/Examples/example.flang");
-    Lexer lexer = Lexer(fileText);
+    Input fIn = Input("D:/Github/FiveLang/Examples/example.flang");
+    Lexer fLex = Lexer(fIn);
 
-    lexer.Lex();
-    lexer.Tokenize();
-
-    list<string> lines = lexer.GetCodeWords();
     auto end_time = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(end_time - start_time).count();
 
@@ -60,7 +36,16 @@ int main()
 
     while (true)
     {
-        printLn("\n---------------------\nEnter a new command:\nexit - Close the program.\nquit - Close the program.\n\nword_list - List of all words in lexer.\nline_list - List of all lines in lexer.\ntoken_list - List of all tokens in lexer.\n---------------------");
+        printLn(R"(
+----------------------------------------
+    Please enter your next command...
+
+           Available Commands:
+exit
+quit
+list
+----------------------------------------
+        )");
         getline(cin, input);
 
         transform(input.begin(), input.end(), input.begin(), [](unsigned char c)
@@ -71,25 +56,9 @@ int main()
             printLn("\nExiting Program...");
             return 0;
         }
-        else if (input == "word_list")
+        else if (input == "list")
         {
-            list<string> word_list = lexer.GetCodeWords();
-            for (auto it = word_list.begin(); it != word_list.end(); ++it)
-            {
-                printLn(*it);
-            }
-        }
-        else if (input == "line_list")
-        {
-            list<string> line_list = lexer.GetCodeLines();
-            for (auto it = line_list.begin(); it != line_list.end(); ++it)
-            {
-                printLn(*it);
-            }
-        }
-        else if (input == "token_list")
-        {
-            list<TOKEN *> token_list = lexer.GetTokens();
+            vector<TOKEN *> token_list = fLex.getTokens();
             int i = 0;
 
             for (auto token : token_list)
