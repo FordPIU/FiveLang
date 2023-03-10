@@ -30,9 +30,4 @@ private:
 	list<string> codeWords;
 
 	list<TOKEN *> tokens = {};
-
-	void ChunkifyByLine();
-	void ChunkifyByWords();
-
-	void newText(string newText);
 };

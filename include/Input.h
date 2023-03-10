@@ -18,4 +18,5 @@ private:
     void RemoveEmptyLines();
     void AdjSemicolons();
     void AdjSoLSpaces();
+    void AdjAllSpaces();
 };

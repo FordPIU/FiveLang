@@ -71,9 +71,6 @@ void Lexer::Lex()
 	this->codeText = this->fileText;
 	this->codeTextLength = this->fileTextLength;
 	this->Lexed = true;
-
-	this->ChunkifyByLine();
-	this->ChunkifyByWords();
 }
 
 void Lexer::Tokenize()
@@ -105,94 +102,4 @@ void Lexer::Tokenize()
 		// TOKEN_CLASS newToken = TOKEN_CLASS(i, "r" + to_string(i));
 		// newToken.create_class();
 	}
-}
-
-void Lexer::ChunkifyByLine()
-{
-	list<string> lineList;
-	string workingLine = "";
-	bool workingLineFoundChar = false;
-
-	for (int i = 0; i < this->codeTextLength; ++i)
-	{
-		char currentChar = this->codeText[i];
-
-		if (currentChar == ';' || currentChar == '\n' || i == this->codeTextLength)
-		{
-			if (!workingLine.empty())
-			{
-				lineList.push_back(workingLine);
-			}
-
-			workingLine = "";
-			workingLineFoundChar = false;
-		}
-		else
-		{
-			if (currentChar == ' ' && workingLineFoundChar == false)
-			{
-				continue;
-			}
-			else
-			{
-				workingLineFoundChar = true;
-			}
-
-			workingLine += currentChar;
-		}
-	}
-
-	this->codeLines = lineList;
-}
-
-void Lexer::ChunkifyByWords()
-{
-	list<string> wordsList;
-	string delimiters = " ,;({})\n";
-
-	for (auto it = this->codeLines.begin(); it != this->codeLines.end(); ++it)
-	{
-		string lineText = *it;
-		string token;
-		size_t pos = 0;
-
-		while (pos < lineText.length())
-		{
-			size_t nextDelimiterPos = lineText.find_first_of(delimiters, pos);
-
-			if (nextDelimiterPos == string::npos)
-			{
-				token = lineText.substr(pos);
-				pos = lineText.length();
-			}
-			else
-			{
-				token = lineText.substr(pos, nextDelimiterPos - pos);
-				pos = nextDelimiterPos + 1;
-			}
-
-			if (!token.empty())
-			{
-				wordsList.push_back(token);
-			}
-
-			if (nextDelimiterPos != string::npos)
-			{
-				string delimiter = lineText.substr(nextDelimiterPos, 1);
-
-				if (delimiter != "\n" && delimiter != " ")
-				{
-					wordsList.push_back(delimiter);
-				}
-			}
-		}
-	}
-
-	this->codeWords = wordsList;
-}
-
-void Lexer::newText(string newText)
-{
-	this->codeText = newText;
-	this->codeTextLength = static_cast<int>(newText.length());
 }

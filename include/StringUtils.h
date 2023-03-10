@@ -1,6 +1,9 @@
 #pragma once
 
 #include "CommonLibs.h"
+#include "ConsoleUtils.h"
+
+using namespace ConsoleUtils;
 
 class Range
 {
@@ -18,6 +21,12 @@ namespace StringUtils
     // Has
     bool hasNoCharactersInString(const string &word);
 
+    // Get
+    int getAscii(char chr);
+
     // Removal
     string removeRangesFromStrng(string text, vector<Range> ranges);
+
+    // Words
+    vector<string> splitWords(string text, string delimiters, bool includeDelimiter = false);
 };

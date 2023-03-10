@@ -13,7 +13,16 @@ using namespace chrono;
 void temp()
 {
     Input input = Input("D:/Github/FiveLang/Examples/example.flang");
-    printLn(input.GetWorkingText());
+    vector<string> word_list = splitWords(input.GetWorkingText(), "\n{()}[]+=-,<.>", true);
+
+    int i = 0;
+    for (auto it = word_list.begin(); it != word_list.end(); ++it)
+    {
+        i++;
+        string wordNum = "Word #" + to_string(i);
+        string hdr = wordNum + ": ";
+        printLn(hdr + *it);
+    }
     while (true)
     {
     };

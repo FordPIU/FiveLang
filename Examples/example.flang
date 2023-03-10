@@ -67,3 +67,4 @@ var9 = 0852; var10 = 5825125
 
 
 //// this is a multiple slash test
+var11 = "this,is.delimiter<test>"

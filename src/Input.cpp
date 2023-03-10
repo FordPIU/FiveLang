@@ -9,6 +9,7 @@ Input::Input(string filePath)
     this->RemoveCommentsFromWorking();
     this->AdjSemicolons();
     this->AdjSoLSpaces();
+    this->AdjAllSpaces();
     this->RemoveEmptyLines();
 }
 
@@ -150,6 +151,27 @@ void Input::AdjSoLSpaces()
     }
 
     string newText = combineLines(lines, '\n');
+
+    this->workingText = newText;
+}
+
+void Input::AdjAllSpaces()
+{
+    string newText = "";
+    bool isInString = false;
+
+    for (char current : this->workingText)
+    {
+        if (current != ' ' || isInString)
+        {
+            if (current == '"')
+            {
+                isInString = !isInString;
+            }
+
+            newText += current;
+        }
+    }
 
     this->workingText = newText;
 }
