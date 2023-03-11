@@ -9,7 +9,7 @@ Input::Input(string filePath)
     this->RemoveCommentsFromWorking();
     this->AdjSemicolons();
     this->AdjSoLSpaces();
-    this->AdjAllSpaces();
+    //this->AdjAllSpaces();
     this->RemoveEmptyLines();
 }
 

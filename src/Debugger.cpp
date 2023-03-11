@@ -43,7 +43,7 @@ int main()
            Available Commands:
 exit
 quit
-list
+tokens
 ----------------------------------------
         )");
         getline(cin, input);
@@ -56,7 +56,7 @@ list
             printLn("\nExiting Program...");
             return 0;
         }
-        else if (input == "list")
+        else if (input == "tokens")
         {
             vector<TOKEN *> token_list = fLex.getTokens();
             int i = 0;

@@ -120,7 +120,7 @@ vector<string> StringUtils::splitWords(string text, string delimiters, bool incl
     vector<string> returnList;
     for (string word : wordsList)
     {
-        if (getAscii(word[0]) != 10)
+        if (getAscii(word[0]) != 10 && word[0] != ' ')
         {
             returnList.push_back(word);
         }

@@ -51,14 +51,31 @@ public:
 Lexer::Lexer(Input fileInput)
 {
 	string inputText = fileInput.GetWorkingText();
-	vector<string> words = splitWords(inputText, "\n{()}[]+=-,<.>", true);
+	vector<string> words = splitWords(inputText, "\n{()}[]+=-,<.> ", true);
 
 	for (auto it = words.begin(); it != words.end(); ++it)
 	{
 		int i = static_cast<int>(distance(words.begin(), it));
 		SurroudingWords surrounding = SurroudingWords(5, it, words);
-		printLn("Current: " + surrounding.middle);
-		printVc("Next 5", surrounding.forward);
-		printVc("Prev 5", surrounding.backward);
+		string current = surrounding.middle;
+		vector<string> next = surrounding.forward;
+		vector<string> prev = surrounding.backward;
+
+		printLn(current);
+
+		// Class
+		if (current == "class")
+		{
+			printLn(current);
+			printLn(next[0]);
+			printLn(next[1]);
+			// Validate
+			if (hasNoCharactersInString(next[0]) && next[1] == "{")
+			{
+				tokens.push_back(new TOKEN_CLASS(i, next[0]));
+
+				printLn("New Token, Type of Class");
+			}
+		}
 	}
 }
