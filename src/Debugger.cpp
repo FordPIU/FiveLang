@@ -1,14 +1,4 @@
-#include <unordered_set>
-#include <chrono>
-#include <cctype>
-#include <Windows.h>
-
-#include "Utils.h"
-#include "Lexer.h"
-#include "Input.h"
-
-using namespace Utils;
-using namespace chrono;
+#include "Debugger.h"
 
 int main()
 {
@@ -43,6 +33,14 @@ int main()
            Available Commands:
 exit
 quit
+memory_usage
+    Paramters:
+    0 - for Byte
+    1 - for KB
+    2 - for MB
+
+    Nothing or Anything Else - for GB
+
 tokens
 ----------------------------------------
         )");
@@ -51,12 +49,54 @@ tokens
         transform(input.begin(), input.end(), input.begin(), [](unsigned char c)
                   { return std::tolower(c); });
 
-        if (input == "exit" || input == "quit")
+        // Splitter
+        vector<string> splitCommand = splitWords(input, " ", false);
+        string command = splitCommand[0];
+        string arg1 = "-256";
+
+        if (splitCommand.size() > 1)
+        {
+            arg1 = splitCommand[1];
+        }
+
+        // Command Handler
+        if (command == "exit" || command == "quit")
         {
             printLn("\nExiting Program...");
             return 0;
         }
-        else if (input == "tokens")
+        else if (command == "memory_usage")
+        {
+            PROCESS_MEMORY_COUNTERS_EX pmc;
+            GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS *)&pmc, sizeof(pmc));
+            SIZE_T virtualMemUsedByMe = pmc.PrivateUsage;
+
+            double memoryUsed;
+            string unit;
+
+            switch (stoi(arg1))
+            {
+            case 0: // B
+                memoryUsed = static_cast<double>(virtualMemUsedByMe);
+                unit = "B";
+                break;
+            case 1: // KB
+                memoryUsed = static_cast<double>(virtualMemUsedByMe) / 1024;
+                unit = "KB";
+                break;
+            case 2: // MB
+                memoryUsed = static_cast<double>(virtualMemUsedByMe) / (1024 * 1024);
+                unit = "MB";
+                break;
+            default: // GB
+                memoryUsed = static_cast<double>(virtualMemUsedByMe) / (1024 * 1024 * 1024);
+                unit = "GB";
+                break;
+            }
+
+            printLn("Memory Usage: " + to_string(memoryUsed) + " " + unit);
+        }
+        else if (command == "tokens")
         {
             vector<TOKEN *> token_list = fLex.getTokens();
             int i = 0;
