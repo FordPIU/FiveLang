@@ -44,8 +44,27 @@ function {float} HardDefinedReturn() {
 }
 
 // Quickie Test
-var1 = 525; var2 = 5892
-var3 = "Hello World!"
+var var1 {int} = 525; var var2 = 5892 // hard type definition variable
+var var3{string} = "Hello World!"
 
-var4, var 5 = "commentexample", // this is a comment // "this is not a comment"
+var var4, var var5 = "commentexample", // this is a comment // "this is not a comment"
 // end of file comment
+
+/*
+Multi line comment Test
+
+hopefully this isnt here after compiling
+*/
+
+/*
+
+Multi line comment #2
+
+*/var var6 = "testing"
+
+var var7 = 01;var var8 = 592
+var var9 = 0852; var var10 = 5825125
+
+
+//// this is a multiple slash test
+var var11 = "this,is.delimiter<test>"
