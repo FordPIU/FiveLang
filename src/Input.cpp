@@ -1,4 +1,14 @@
 #include "Input.h"
+#include "ConsoleUtils.h"
+#include "FileUtils.h"
+#include "StringUtils.h"
+
+using namespace Prints;
+using namespace File_Getters;
+using namespace String_Combiners;
+using namespace String_Splitters;
+using namespace String_Checkers;
+using namespace String_Removers;
 
 Input::Input(string filePath)
 {
@@ -9,7 +19,7 @@ Input::Input(string filePath)
     this->RemoveCommentsFromWorking();
     this->AdjSemicolons();
     this->AdjSoLSpaces();
-    //this->AdjAllSpaces();
+    // this->AdjAllSpaces();
     this->RemoveEmptyLines();
 }
 
@@ -105,7 +115,7 @@ void Input::RemoveCommentsFromWorking()
         }
     }
 
-    this->workingText = removeRangesFromStrng(workText, removalRanges);
+    this->workingText = removeRangesFromString(workText, removalRanges);
 }
 
 void Input::RemoveEmptyLines()

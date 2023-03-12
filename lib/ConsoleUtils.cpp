@@ -1,44 +1,44 @@
 #include "ConsoleUtils.h"
 
-void ConsoleUtils::printLn(string msg)
+void Prints::printLn(string msg)
 {
-	cout << msg << endl;
+    cout << msg << endl;
 }
 
-void ConsoleUtils::printLn(char msg)
+void Prints::printLn(char msg)
 {
-	cout << string(1, msg) << endl;
+    cout << string(1, msg) << endl;
 }
 
-void ConsoleUtils::printLn(int msg)
+void Prints::printLn(int msg)
 {
-	cout << to_string(msg) << endl;
+    cout << to_string(msg) << endl;
 }
 
-void ConsoleUtils::printVc(string header, vector<string> list)
+void Prints::printVc(string header, vector<string> list)
 {
-	printLn('\n');
-	printLn(header);
+    printLn('\n');
+    printLn(header);
 
-	int i = 0;
+    int i = 0;
 
-	for (string str : list)
-	{
-		i++;
-		printLn(to_string(i) + ": " + str);
-	}
+    for (string str : list)
+    {
+        i++;
+        printLn(to_string(i) + ": " + str);
+    }
 
-	printLn('\n');
+    printLn('\n');
 }
 
-void ConsoleUtils::error(string out)
+void Errors::error(string out)
 {
-	cerr << out << endl;
-	throw runtime_error(out);
+    cerr << out << endl;
+    throw runtime_error(out);
 }
 
-void ConsoleUtils::error(char out)
+void Errors::error(char out)
 {
-	cerr << out << endl;
-	throw runtime_error(string(1, out));
+    cerr << out << endl;
+    throw runtime_error(string(1, out));
 }

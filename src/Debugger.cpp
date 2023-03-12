@@ -1,4 +1,9 @@
 #include "Debugger.h"
+#include "ConsoleUtils.h"
+#include "StringUtils.h"
+
+using namespace Prints;
+using namespace String_Splitters;
 
 int main()
 {
@@ -98,14 +103,20 @@ tokens
         }
         else if (command == "tokens")
         {
-            vector<TOKEN *> token_list = fLex.getTokens();
+            vector<Token *> token_list = fLex.getTokens();
             int i = 0;
 
             for (auto token : token_list)
             {
                 i++;
                 printLn("\nToken #: " + to_string(i));
-                token->output_class();
+                printLn("-- TOKEN --");
+                printLn("Position: " + token->tokenPosition);
+                printLn("Type: " + token->tokenType);
+                printLn("-- DEFINITION --");
+                printLn("Name: " + token->tokenDefinition.name);
+                printLn("Type: " + token->tokenDefinition.type);
+                printLn("Value: " + token->tokenDefinition.value);
             }
         }
         else

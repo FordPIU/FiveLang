@@ -1,18 +1,17 @@
 #pragma once
 
-#include "CommonLibs.h"
-#include "Utils.h"
+#include <map>
+
+#include "Common.h"
 #include "Tokens.h"
 #include "Input.h"
-
-using namespace Utils;
 
 class Lexer
 {
 public:
 	Lexer(Input fileInput);
 
-	vector<TOKEN *> getTokens() { return this->tokens; };
+	vector<Token *> getTokens() { return this->tokens; };
 
 private:
 	string fileText;
@@ -21,8 +20,8 @@ private:
 
 	string codeText;
 	int codeTextLength = 0;
-	list<string> codeLines;
-	list<string> codeWords;
+	vector<string> codeLines;
+	vector<string> codeWords;
 
-	vector<TOKEN *> tokens = {};
+	vector<Token *> tokens = {};
 };

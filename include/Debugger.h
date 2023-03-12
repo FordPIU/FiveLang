@@ -6,9 +6,8 @@
 #include <Windows.h>
 #include <Psapi.h>
 
-#include "Utils.h"
+#include "Common.h"
 #include "Lexer.h"
 #include "Input.h"
 
-using namespace Utils;
 using namespace chrono;

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Utils.h"
-
-using namespace Utils;
+#include "Common.h"
+#include <algorithm>
 
 class Input
 {
