@@ -71,7 +71,7 @@ Lexer::Lexer(Input fileInput)
 		}
 
 		int i = static_cast<int>(distance(words.begin(), it));
-		SurroudingWords surrounding = SurroudingWords(5, it, words);
+		SurroudingWords surrounding = SurroudingWords(6, it, words);
 		string current = surrounding.middle;
 		vector<string> next = surrounding.forward;
 		vector<string> prev = surrounding.backward;
@@ -123,7 +123,7 @@ Lexer::Lexer(Input fileInput)
 		}
 
 		// Variable
-		/*else if (current == "var")
+		else if (current == "var")
 		{
 			// Validate
 			if (!checkHasNoCharacterInString(next[0]))
@@ -155,8 +155,10 @@ Lexer::Lexer(Input fileInput)
 				skip += 3;
 			}
 
+			tokens.push_back(new Token(i, "VARIABLE", defName, defType, defValue));
+
 			skip += 2;
 			continue;
-		}*/
+		}
 	}
 }
