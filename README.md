@@ -5,11 +5,47 @@ Idea is to have the language compile into LUA, JS, or C# for FiveM, and (Machine
 
 <br>
 
+## Example of the lang
+```cs
+var i = 0
+
+function Hello()
+{
+    print("Hello World!")
+}
+
+thread Increment()
+{
+    i++
+    print(i)
+}
+
+Increment[Tick=1s]()
+
+/*
+    Expected result:
+
+    Hello World!
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    ...
+*/
+```
+
+<br>
+
 ## Progress
 | Status | Label | Progress |
 | :---: | :---: | :---: |
 | :white_check_mark: | [Design / Syntax]( https://github.com/FordPIU/FiveLang/blob/main/Examples/example.flang ) | ██████████ |
-| :construction: | [Lexer]( https://github.com/FordPIU/FiveLang/pull/41 ) | ███░░░░░░░ |
+| :construction: | [Lexer]( https://github.com/FordPIU/FiveLang/pull/41 ) | █████░░░░░ |
 | :x: | Praser | ░░░░░░░░░░ |
 | :x: | Type Checker | ░░░░░░░░░░ |
 | :x: | Code Gen (LUA) | ░░░░░░░░░░ |
