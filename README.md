@@ -9,7 +9,7 @@ Idea is to have the language compile into LUA, JS, or C# for FiveM, and (Machine
 | Status | Label | Progress |
 | :---: | :---: | :---: |
 | :white_check_mark: | [Design / Syntax]( https://github.com/FordPIU/FiveLang/blob/main/Examples/example.flang ) | ██████████ |
-| :construction: | [Lexer]( https://github.com/FordPIU/FiveLang/pull/41 ) | ███░░░░░░░ |
+| :construction: | [Lexer]( https://github.com/FordPIU/FiveLang/pull/41 ) | █████░░░░░ |
 | :x: | Praser | ░░░░░░░░░░ |
 | :x: | Type Checker | ░░░░░░░░░░ |
 | :x: | Code Gen (LUA) | ░░░░░░░░░░ |
