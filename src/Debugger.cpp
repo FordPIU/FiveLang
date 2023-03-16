@@ -14,7 +14,7 @@ int main()
     HWND console = GetConsoleWindow();
     RECT r;
     GetWindowRect(console, &r);
-    MoveWindow(console, r.left, r.top, 2400, 1200, TRUE);
+    MoveWindow(console, 0, 0, 2400, 1200, TRUE);
 
     // Lexer Test
     printLn("Starting Lexer Test!");
