@@ -7,6 +7,7 @@ using namespace Defaults;
 using namespace Errors;
 using namespace String_Splitters;
 using namespace String_Checkers;
+using namespace String_Converters;
 
 class SurroudingWords
 {
@@ -56,6 +57,36 @@ public:
 	string middle;
 };
 
+string autoDetermineType(string type)
+{
+	string lowertype = convertLowercase(type);
+
+	if (type.length() > 0)
+	{
+		if (type[0] == '"')
+		{
+			return "STRING";
+		}
+		else if (lowertype == "true" || lowertype == "false")
+		{
+			return "BOOL";
+		}
+		else if (isdigit(type[0]))
+		{
+			if (type.find('.') != string::npos)
+			{
+				return "FLOAT";
+			}
+			else
+			{
+				return "INT";
+			}
+		}
+	}
+
+	return (Defaults::DEF_NO_TYPE);
+}
+
 Lexer::Lexer(Input fileInput)
 {
 	string inputText = fileInput.GetWorkingText();
@@ -82,7 +113,7 @@ Lexer::Lexer(Input fileInput)
 			// Validate
 			if (checkHasNoCharacterInString(next[0]) && next[1] == "{")
 			{
-				tokens.push_back(new Token(i, "CLASS", next[0], DEF_NO_TYPE, DEF_NO_VALUE));
+				tokens.push_back(new Token(i, "CLASS", next[0], convertUppercase(DEF_NO_TYPE), DEF_NO_VALUE));
 
 				skip += 2;
 				continue;
@@ -95,7 +126,7 @@ Lexer::Lexer(Input fileInput)
 			// Validate
 			if (checkHasNoCharacterInString(next[0]) && next[1] == "(")
 			{
-				tokens.push_back(new Token(i, "THREAD", next[0], DEF_NO_TYPE, DEF_NO_VALUE));
+				tokens.push_back(new Token(i, "THREAD", next[0], convertUppercase(DEF_NO_TYPE), DEF_NO_VALUE));
 
 				skip += 2;
 				continue;
@@ -108,14 +139,14 @@ Lexer::Lexer(Input fileInput)
 			// Validate
 			if (checkHasNoCharacterInString(next[0]) && next[1] == "(")
 			{
-				tokens.push_back(new Token(i, "FUNCTION", next[0], DEF_NO_TYPE, DEF_NO_VALUE));
+				tokens.push_back(new Token(i, "FUNCTION", next[0], convertUppercase(DEF_NO_TYPE), DEF_NO_VALUE));
 
 				skip += 2;
 				continue;
 			}
 			else if (next[0] == "{" && next[2] == "}" && checkHasNoCharacterInString(next[3]) && next[4] == "(")
 			{
-				tokens.push_back(new Token(i, "FUNCTION", next[3], next[1], DEF_NO_VALUE));
+				tokens.push_back(new Token(i, "FUNCTION", next[3], convertUppercase(next[1]), DEF_NO_VALUE));
 
 				skip += 5;
 				continue;
@@ -155,7 +186,12 @@ Lexer::Lexer(Input fileInput)
 				skip += 3;
 			}
 
-			tokens.push_back(new Token(i, "VARIABLE", defName, defType, defValue));
+			if (defType == Defaults::DEF_NO_TYPE && defValue != Defaults::DEF_NO_VALUE)
+			{
+				defType = autoDetermineType(defValue);
+			}
+
+			tokens.push_back(new Token(i, "VARIABLE", defName, convertUppercase(defType), defValue));
 
 			skip += 2;
 			continue;

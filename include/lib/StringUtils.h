@@ -34,3 +34,9 @@ namespace String_Getters
 {
     int getAscii(char chr);
 }
+
+namespace String_Converters
+{
+    string convertLowercase(string tolowercase);
+    string convertUppercase(string tolowercase);
+}

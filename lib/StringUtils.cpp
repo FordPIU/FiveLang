@@ -133,3 +133,28 @@ string String_Removers::removeRangesFromString(string text, vector<Range> ranges
 
     return workText;
 }
+
+// Converters
+string String_Converters::convertLowercase(string tolowercase)
+{
+    string retString = "";
+
+    for (char c : tolowercase)
+    {
+        retString += tolower(c);
+    }
+
+    return retString;
+}
+
+string String_Converters::convertUppercase(string tolowercase)
+{
+    string retString = "";
+
+    for (char c : tolowercase)
+    {
+        retString += toupper(c);
+    }
+
+    return retString;
+}
