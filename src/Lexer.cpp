@@ -1,231 +1,200 @@
 #include "Lexer.h"
+#include "Defaults.h"
+#include "ConsoleUtils.h"
+#include "StringUtils.h"
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+using namespace Defaults;
+using namespace Errors;
+using namespace String_Splitters;
+using namespace String_Checkers;
+using namespace String_Converters;
 
-
-class TextRange {
+class SurroudingWords
+{
 public:
-	TextRange(int start, int end) : start(start), end(end) {}
+	SurroudingWords(int depth, vector<string>::iterator it, vector<string> &lst)
+	{
+		auto prevIt = it;
+		auto nextIt = it;
 
-	int start;
-	int end;
+		this->middle = *it;
+
+		for (int i = 0; i < depth; ++i)
+		{
+			this->forward.push_back("");
+			this->backward.push_back("");
+		}
+
+		for (int i = 0; i < depth; ++i)
+		{
+			if (nextIt == lst.end())
+			{
+				break;
+			}
+			else
+			{
+				++nextIt;
+			}
+			this->forward[i] = (nextIt == lst.end()) ? "" : *nextIt;
+		}
+
+		for (int i = 0; i < depth; ++i)
+		{
+			if (prevIt == lst.begin())
+			{
+				break;
+			}
+			else
+			{
+				--prevIt;
+			}
+			this->backward[i] = *prevIt;
+		}
+	}
+
+	vector<string> forward;
+	vector<string> backward;
+	string middle;
 };
 
-
-
-void visualizeCode(int prevPos, int currPos, string codeText, bool isHighlighted)
+string autoDetermineType(string type)
 {
-	if (true) { return; }
+	string lowertype = convertLowercase(type);
 
-	int method = 1;
-
-	if (method == 0) {
-		system("cls");
-
-		for (int i = 0; i < codeText.size(); ++i) {
-			if (i == prevPos || i == currPos) {
-				if (isHighlighted) {
-					cout << "\033[97;43m" << codeText[i] << "\033[0m"; // white on yellow for comment
-				}
-				else {
-					cout << "\033[97;41m" << codeText[i] << "\033[0m"; // white on red for code
-				}
+	if (type.length() > 0)
+	{
+		if (type[0] == '"')
+		{
+			return "STRING";
+		}
+		else if (lowertype == "true" || lowertype == "false")
+		{
+			return "BOOL";
+		}
+		else if (isdigit(type[0]))
+		{
+			if (type.find('.') != string::npos)
+			{
+				return "FLOAT";
 			}
-			else {
-				cout << codeText[i];
+			else
+			{
+				return "INT";
 			}
-		}
-
-		cout << endl;
-	}
-	else {
-		HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-
-		COORD topLeft = { 0, 0 };
-		SetConsoleCursorPosition(console, topLeft);
-
-		for (int i = 0; i < codeText.size(); ++i) {
-			if (i == prevPos || i == currPos) {
-				if (isHighlighted) {
-					std::cout << "\033[33m" << codeText[i] << "\033[0m"; // yellow for comment
-				}
-				else {
-					std::cout << "\033[31m" << codeText[i] << "\033[0m"; // red for code
-				}
-			}
-			else {
-				std::cout << codeText[i];
-			}
-		}
-
-		std::cout << std::endl;
-	}
-}
-
-string removeRangesFromText(list<TextRange> ranges, string codeText) {
-	string workingText = codeText;
-	int removalOffset = 0;
-
-	for (const auto& rangePos : ranges) {
-		int start = rangePos.start - removalOffset;
-		int end = rangePos.end - removalOffset;
-
-		workingText.erase(start, end - start);
-
-		removalOffset += end - start;
-	}
-
-	return workingText;
-}
-
-
-
-Lexer::Lexer(string rawFileText) {
-	// Init the values
-	this->fileText = "";
-	this->fileTextLength = 0;
-
-	// Empty check
-	if (rawFileText.empty()) { error("Invalid File Text!"); return; }
-
-	// Actually set
-	this->fileText = rawFileText;
-	this->fileTextLength = rawFileText.length();
-}
-
-
-
-void Lexer::Lex() {
-	this->codeText = this->fileText;
-	this->codeTextLength = this->fileTextLength;
-
-	this->RemoveSLComments();
-	system("cls");
-	this->RemoveSoLSpaces();
-
-	this->ChunkifyByLine();
-	//this->ChunkifyByBody();
-}
-
-
-
-void Lexer::RemoveSLComments() {
-	list<TextRange> ranges;
-	bool workingInComment = false;
-	int commentStart = 0;
-
-	for (int i = 0; i < this->codeTextLength; ++i) {
-		char currentChar = this->codeText[i];
-		char prevChar;
-
-		if (i == 0) {
-			prevChar = ' ';
-		}
-		else {
-			prevChar = this->codeText[i - 1];
-		}
-
-		if (workingInComment == false) {
-			if (currentChar == '/' && prevChar == '/') {
-				workingInComment = true;
-				commentStart = i - 1;
-			}
-		}
-		else {
-			if (i == (this->codeTextLength - 1) || (currentChar == '/' && prevChar == '/') || currentChar == '\n') {
-				int e = i;
-
-				if (currentChar == '/') { e += 1; }
-
-				ranges.push_back(TextRange(commentStart, e));
-
-				workingInComment = false;
-				commentStart = 0;
-			}
-		}
-
-		visualizeCode(i, i - 1, this->codeText, workingInComment);
-	}
-
-	string newText = removeRangesFromText(ranges, this->codeText);
-
-	this->newText(newText);
-}
-
-void Lexer::RemoveSoLSpaces() {
-	list<TextRange> ranges;
-	bool foundSpace = false;
-	bool newLine = true;
-	int start = -1;
-
-	for (int i = 0; i < (this->codeTextLength - 1); ++i) {
-		char currentChar = this->codeText[i];
-
-		if (foundSpace == false && currentChar == ' ' && newLine == true) {
-			start = i;
-			foundSpace = true;
-			newLine = false;
-		}
-		else if (foundSpace == true && currentChar != ' ') {
-			ranges.push_back(TextRange(start, i));
-			foundSpace = false;
-		}
-
-		if (currentChar == '\n') { newLine = true; }
-
-		if (start != -1) {
-			visualizeCode(start, i, this->codeText, foundSpace);
 		}
 	}
 
-	string newText = removeRangesFromText(ranges, this->codeText);
-
-	this->newText(newText);
+	return (Defaults::DEF_NO_TYPE);
 }
 
+Lexer::Lexer(Input fileInput)
+{
+	string inputText = fileInput.GetWorkingText();
+	vector<string> words = splitWords(inputText, "\n{()}[]+=-,<.> ", true);
+	int skip = 0;
 
-
-void Lexer::ChunkifyByLine() {
-	list<string> lineList;
-	string workingLine = "";
-	bool workingLineFoundChar = false;
-
-	for (int i = 0; i < this->codeTextLength; ++i) {
-		char currentChar = this->codeText[i];
-
-		if (currentChar == ';' || currentChar == '\n' || i == this->codeTextLength) {
-			if (!workingLine.empty()) {
-				lineList.push_back(workingLine);
-			}
-
-			workingLine = "";
-			workingLineFoundChar = false;
+	for (auto it = words.begin(); it != words.end(); ++it)
+	{
+		if (skip > 0)
+		{
+			skip--;
+			continue;
 		}
-		else {
-			if (currentChar == ' ' && workingLineFoundChar == false) {
+
+		int i = static_cast<int>(distance(words.begin(), it));
+		SurroudingWords surrounding = SurroudingWords(6, it, words);
+		string current = surrounding.middle;
+		vector<string> next = surrounding.forward;
+		vector<string> prev = surrounding.backward;
+
+		// Class
+		if (current == "class")
+		{
+			// Validate
+			if (checkHasNoCharacterInString(next[0]) && next[1] == "{")
+			{
+				tokens.push_back(new Token(i, "CLASS", next[0], convertUppercase(DEF_NO_TYPE), DEF_NO_VALUE));
+
+				skip += 2;
 				continue;
 			}
-			else {
-				workingLineFoundChar = true;
+		}
+
+		// Thread
+		else if (current == "thread")
+		{
+			// Validate
+			if (checkHasNoCharacterInString(next[0]) && next[1] == "(")
+			{
+				tokens.push_back(new Token(i, "THREAD", next[0], convertUppercase(DEF_NO_TYPE), DEF_NO_VALUE));
+
+				skip += 2;
+				continue;
+			}
+		}
+
+		// Function
+		else if (current == "function")
+		{
+			// Validate
+			if (checkHasNoCharacterInString(next[0]) && next[1] == "(")
+			{
+				tokens.push_back(new Token(i, "FUNCTION", next[0], convertUppercase(DEF_NO_TYPE), DEF_NO_VALUE));
+
+				skip += 2;
+				continue;
+			}
+			else if (next[0] == "{" && next[2] == "}" && checkHasNoCharacterInString(next[3]) && next[4] == "(")
+			{
+				tokens.push_back(new Token(i, "FUNCTION", next[3], convertUppercase(next[1]), DEF_NO_VALUE));
+
+				skip += 5;
+				continue;
+			}
+		}
+
+		// Variable
+		else if (current == "var")
+		{
+			// Validate
+			if (!checkHasNoCharacterInString(next[0]))
+			{
+				error("Invalid Variable Declaration @ Word #" + to_string(i));
 			}
 
-			workingLine += currentChar;
+			string defName = next[0];
+			string defValue = Defaults::DEF_NO_VALUE;
+			string defType = Defaults::DEF_NO_TYPE;
+
+			if (next[1] == "=")
+			{
+				defValue = next[2];
+
+				skip += 2;
+			}
+			else if (next[1] == "{" && next[3] == "}")
+			{
+				defType = next[2];
+
+				if (next[4] == "=")
+				{
+					defValue = next[5];
+
+					skip += 2;
+				}
+
+				skip += 3;
+			}
+
+			if (defType == Defaults::DEF_NO_TYPE && defValue != Defaults::DEF_NO_VALUE)
+			{
+				defType = autoDetermineType(defValue);
+			}
+
+			tokens.push_back(new Token(i, "VARIABLE", defName, convertUppercase(defType), defValue));
+
+			skip += 2;
+			continue;
 		}
 	}
-
-	this->codeLines = lineList;
-}
-
-void Lexer::ChunkifyByBody() {
-	list<string> newCodeBodys;
-
-
-}
-
-
-
-void Lexer::newText(string newText) {
-	this->codeText = newText;
-	this->codeTextLength = newText.length();
 }

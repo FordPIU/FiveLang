@@ -1,16 +1,23 @@
 #include "FileUtils.h"
+#include "ConsoleUtils.h"
 
+string File_Getters::GetFileText(string FilePath)
+{
+    Prints::printLn("Loading File from " + FilePath);
 
-string FileUtils::GetFileText(string FilePath) {
-    ifstream input_file("../Example.flang");
+    ifstream input_file(FilePath);
 
-    if (!input_file) { error("Invalid file path!"); return 0; }
+    if (!input_file)
+    {
+        Errors::error("Invalid file path!");
+        return 0;
+    }
 
     input_file.seekg(0, input_file.end);
-    int length = input_file.tellg();
+    int length = static_cast<int>(input_file.tellg());
     input_file.seekg(0, input_file.beg);
 
-    char* buffer = new char[length];
+    char *buffer = new char[length];
 
     input_file.read(buffer, length);
 
@@ -19,4 +26,9 @@ string FileUtils::GetFileText(string FilePath) {
     delete[] buffer;
 
     return fileText;
+}
+
+void Test()
+{
+    vector<string> test = {};
 }

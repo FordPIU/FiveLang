@@ -1,35 +1,27 @@
 #pragma once
 
-#include <unordered_set>
-#include "Utils.h"
+#include <map>
 
-using namespace Utils;
+#include "Common.h"
+#include "Tokens.h"
+#include "Input.h"
 
-
-class Lexer {
+class Lexer
+{
 public:
-	Lexer(string rawFileText);
+	Lexer(Input fileInput);
 
-	void Lex();
-
-	string GetCodeText() { return this->codeText; }
-	list<string> GetCodeLines() { return this->codeLines; }
-	list<string> GetCodeBodys() { return this->codeBodys; }
+	vector<Token *> getTokens() { return this->tokens; };
 
 private:
 	string fileText;
 	int fileTextLength = 0;
+	bool Lexed = false;
 
 	string codeText;
 	int codeTextLength = 0;
-	list<string> codeLines;
-	list<string> codeBodys;
+	vector<string> codeLines;
+	vector<string> codeWords;
 
-	void RemoveSLComments();
-	void RemoveSoLSpaces();
-
-	void ChunkifyByLine();
-	void ChunkifyByBody();
-
-	void newText(string newText);
+	vector<Token *> tokens = {};
 };
