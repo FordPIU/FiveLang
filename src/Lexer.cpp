@@ -136,20 +136,34 @@ Lexer::Lexer(Input fileInput)
 		// Function
 		else if (current == "function")
 		{
+			string functionName = "NOVAL";
+			string functionType = convertUppercase(DEF_NO_TYPE);
+			vector<string> functionParams = {};
+			int amtForward = 0;
+
 			// Validate
 			if (checkHasNoCharacterInString(next[0]) && next[1] == "(")
 			{
-				tokens.push_back(new Token(i, "FUNCTION", next[0], convertUppercase(DEF_NO_TYPE), DEF_NO_VALUE));
+				functionName = next[0];
+				amtForward = 2;
 
 				skip += 2;
 				continue;
 			}
 			else if (next[0] == "{" && next[2] == "}" && checkHasNoCharacterInString(next[3]) && next[4] == "(")
 			{
-				tokens.push_back(new Token(i, "FUNCTION", next[3], convertUppercase(next[1]), DEF_NO_VALUE));
+				functionName = next[3];
+				functionType = convertUppercase(next[1]);
+				amtForward = 5;
 
 				skip += 5;
 				continue;
+			}
+
+			// Paramters
+			if ((i + amtForward) <= words.size() && next[amtForward] != ")" && checkHasNoCharacterInString(next[amtForward]))
+			{
+				Prints::printLn(next[amtForward]);
 			}
 		}
 
