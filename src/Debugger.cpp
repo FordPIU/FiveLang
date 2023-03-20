@@ -7,26 +7,48 @@ using namespace String_Splitters;
 
 int main()
 {
-    // Start Timer
-    auto start_time = high_resolution_clock::now();
+    // Globals
+    Lexer Glexer = Lexer(nullptr); // Fix me!
 
     // Set Window Size
     HWND console = GetConsoleWindow();
     RECT r;
     GetWindowRect(console, &r);
     MoveWindow(console, 0, 0, 2400, 1200, TRUE);
+    
+    // Lex input
+    bool isWaitingForInput = true;
+    string input;
 
-    // Lexer Test
-    printLn("Starting Lexer Test!");
+    while (isWaitingForInput)
+    {
+        getline(cin, input);
 
-    Input fIn = Input("D:/Github/FiveLang/Examples/example.flang");
-    Lexer fLex = Lexer(fIn);
+        transform(input.begin(), input.end(), input.begin(), [](unsigned char c)
+            { return tolower(c); });
 
-    auto end_time = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(end_time - start_time).count();
+        if (!input.empty())
+        {
+            // Start Timer
+            auto start_time = high_resolution_clock::now();
 
-    printLn("Finished Lexer Test! -- Took " + to_string(duration) + "ms to complete");
+            // Lexer Test
+            printLn("Starting Lexer Test!");
 
+            Input fIn = Input("D:/Github/FiveLang/Examples/example.flang");
+            Lexer fLex = Lexer(fIn);
+
+            auto end_time = high_resolution_clock::now();
+            auto duration = duration_cast<milliseconds>(end_time - start_time).count();
+
+            printLn("Finished Lexer Test! -- Took " + to_string(duration) + "ms to complete");
+
+            isWaitingForInput = false;
+            Glexer = fLex;
+        }
+    }
+
+    // After lex commands
     string input;
 
     while (true)
@@ -52,7 +74,7 @@ tokens
         getline(cin, input);
 
         transform(input.begin(), input.end(), input.begin(), [](unsigned char c)
-                  { return std::tolower(c); });
+            { return tolower(c); });
 
         // Splitter
         vector<string> splitCommand = splitWords(input, " ", false);
@@ -103,7 +125,7 @@ tokens
         }
         else if (command == "tokens")
         {
-            vector<Token *> token_list = fLex.getTokens();
+            vector<Token *> token_list = Glexer.getTokens();
             int i = 0;
 
             for (auto token : token_list)
